@@ -45,6 +45,9 @@ import fr.paris.lutece.plugins.seo.service.generator.GeneratorOptions;
 import fr.paris.lutece.plugins.seo.service.sitemap.SitemapUtils;
 import fr.paris.lutece.portal.service.datastore.DatastoreService;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
 import java.text.MessageFormat;
 
 import java.util.List;
@@ -52,6 +55,8 @@ import java.util.List;
 /**
  * Blog Friendly Url Generator
  */
+@ApplicationScoped
+@Named
 public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
 {
     private static final String GENERATOR_NAME = "Blog Friendly URL Generator";
