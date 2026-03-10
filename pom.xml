@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>module-seo-blog</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>Lutece seo blog module</name>
 
     <repositories>
@@ -59,7 +59,7 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-seo-module-seo-blog.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-seo-module-seo-blog.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-seo-module-seo-blog.git</url>
-      <tag>module-seo-blog-1.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
     
 </project>
