@@ -60,7 +60,7 @@ import java.util.List;
 public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
 {
     private static final String GENERATOR_NAME = "Blog Friendly URL Generator";
-    private static final String TECHNICAL_URL = "/jsp/site/Portal.jsp?page=blog&amp;id={0}&amp;portlet_id={1}";
+    private static final String TECHNICAL_URL = "/jsp/site/Portal.jsp?page=blog&id={0}&portlet_id={1}";
     private static final String SLASH = "/";
     private static final String DEFAULT_CHANGE_FREQ = SitemapUtils.CHANGE_FREQ_VALUES [3];
     private static final String DEFAULT_PRIORITY = SitemapUtils.PRIORITY_VALUES [3];
