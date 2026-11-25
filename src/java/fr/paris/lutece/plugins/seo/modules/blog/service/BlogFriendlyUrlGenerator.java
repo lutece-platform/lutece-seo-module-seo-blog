@@ -50,6 +50,7 @@ import jakarta.inject.Named;
 
 import java.text.MessageFormat;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,16 +95,11 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
                 url.setFriendlyUrl( SLASH + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
             }
             
-            List<BlogPublication> listPublications = doc.getBlogPublication();
-            BlogPublication publication = getPublication( listPublications );
+            BlogPublication publication = getPublication( doc, new Date( ) );
             
             if( publication != null )
             {
-                Object [ ] args = {
-                        doc.getId( ), publication.getIdPortlet()
-                };
-                String strTechnicalUrl = MessageFormat.format( TECHNICAL_URL, args );
-                url.setTechnicalUrl( strTechnicalUrl );
+                url.setTechnicalUrl( buildTechnicalUrl( doc.getId( ), publication.getIdPortlet( ) ) );
                 url.setCanonical( _bCanonical );
                 url.setSitemap( _bSitemap );
                 url.setSitemapChangeFreq( _strChangeFreq );
@@ -117,12 +113,32 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
     }
     
     /**
-     * Return the first valid publication of a list 
-     * @param listPublications The list
+     * Builds the technical URL of a blog post published in a portlet
+     * 
+     * @param nIdBlog
+     *            the blog id
+     * @param nIdPortlet
+     *            the portlet id
+     * @return the technical URL
+     */
+    static String buildTechnicalUrl( int nIdBlog, int nIdPortlet )
+    {
+        // plain decimal ids: MessageFormat would write 1000 as "1,000" or "1 000" (locale grouping)
+        return MessageFormat.format( TECHNICAL_URL, String.valueOf( nIdBlog ), String.valueOf( nIdPortlet ) );
+    }
+
+    /**
+     * Return the first valid publication of a blog
+     * 
+     * @param blog
+     *            The blog
+     * @param now
+     *            the current date
      * @return the first valid publication otherwise null
      */
-    private BlogPublication getPublication( List<BlogPublication> listPublications )
+    static BlogPublication getPublication( Blog blog, Date now )
     {
+        List<BlogPublication> listPublications = blog.getBlogPublication( );
         BlogPublication publication = null;
         for( BlogPublication bp : listPublications )
         {
