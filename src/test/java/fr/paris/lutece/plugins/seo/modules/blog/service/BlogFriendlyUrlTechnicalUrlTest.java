@@ -86,6 +86,27 @@ public class BlogFriendlyUrlTechnicalUrlTest
         assertEquals( "/jsp/site/Portal.jsp?page=blog&id=7&portlet_id=3", BlogFriendlyUrlGenerator.buildTechnicalUrl( 7, 3 ) );
     }
 
+    /**
+     * Only a publication in force (begun, not ended) of a blog not archived gives a friendly URL
+     */
+    @Test
+    public void testPublicationInForceOnly( )
+    {
+        Date now = new Date( );
+        BlogPublication ended = publication( 1, new Date( now.getTime( ) - 30 * DAY ), new Date( now.getTime( ) - DAY ) );
+        BlogPublication future = publication( 2, new Date( now.getTime( ) + DAY ), new Date( now.getTime( ) + 30 * DAY ) );
+        BlogPublication current = publication( 3, new Date( now.getTime( ) - DAY ), new Date( now.getTime( ) + DAY ) );
+        BlogPublication noEnd = publication( 4, new Date( now.getTime( ) - DAY ), null );
+
+        assertNull( BlogFriendlyUrlGenerator.getPublication( blog( false, ended ), now ), "publication ended" );
+        assertNull( BlogFriendlyUrlGenerator.getPublication( blog( false, future ), now ), "publication not started" );
+        assertNull( BlogFriendlyUrlGenerator.getPublication( blog( false, ended, future ), now ), "no publication in force" );
+        assertSame( current, BlogFriendlyUrlGenerator.getPublication( blog( false, ended, current ), now ) );
+        assertSame( noEnd, BlogFriendlyUrlGenerator.getPublication( blog( false, noEnd ), now ) );
+        assertNull( BlogFriendlyUrlGenerator.getPublication( blog( true, current ), now ), "archived blog" );
+        assertNull( BlogFriendlyUrlGenerator.getPublication( blog( false ), now ), "never published" );
+    }
+
     private static BlogPublication publication( int nIdPortlet, Date dateBegin, Date dateEnd )
     {
         BlogPublication publication = new BlogPublication( );

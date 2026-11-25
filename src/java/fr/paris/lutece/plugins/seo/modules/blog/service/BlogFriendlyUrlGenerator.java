@@ -128,7 +128,7 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
     }
 
     /**
-     * Return the first valid publication of a blog
+     * Return the first publication of a blog in force at the given date
      * 
      * @param blog
      *            The blog
@@ -138,17 +138,21 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
      */
     static BlogPublication getPublication( Blog blog, Date now )
     {
-        List<BlogPublication> listPublications = blog.getBlogPublication( );
-        BlogPublication publication = null;
-        for( BlogPublication bp : listPublications )
+        // same rule as the front office (BlogApp.isPublished): a post archived or out of its publication dates is refused
+        if ( blog.isArchived( ) || blog.getBlogPublication( ) == null )
         {
-            if( bp.getStatus() == 1 )
+            return null;
+        }
+        for ( BlogPublication bp : blog.getBlogPublication( ) )
+        {
+            if ( bp.getStatus( ) == 1 && bp.getDateBeginPublishing( ) != null && !bp.getDateBeginPublishing( ).after( now )
+                    && ( bp.getDateEndPublishing( ) == null || bp.getDateEndPublishing( ).after( now ) ) )
             {
                 return bp;
             }
         }
 
-        return publication;    
+        return null;
     }
 
     /**
